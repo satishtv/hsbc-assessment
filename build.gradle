@@ -35,6 +35,10 @@ task runUnitTests(type: Test) {
     }
 }
 
+task cucumberTests(type: Test) {
+    include '**/Runner*'
+}
+
 //task cucumber() {
 //    dependsOn assemble, testClasses
 //    doLast {
