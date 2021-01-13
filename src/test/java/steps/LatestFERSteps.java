@@ -9,19 +9,30 @@ import org.testng.Assert;
 public class LatestFERSteps extends BaseSteps {
 
     LatestRatesClient latestRatesClient;
+    LatestRatesResponse latestRatesResponse;
 
     @When("^rates API is available$")
     public void initializeLatestRatesClient() throws Throwable {
         latestRatesClient = new LatestRatesClient();
     }
 
-    @When("^the response status should be (\\d+)")
+    @When("^the response status should be (\\d+)$")
     public void verifyResponse(int status) throws Throwable {
         Assert.assertEquals(latestRatesClient.getLatestRates().getHttpStatusCode(), status);
     }
 
-    @Then("^the response for rates API (\\w+) should match")
-    public void verifyResponse(String symbol) throws Throwable {
+    @Then("^user hits an invalid URL")
+    public void hitWithInvalidURL() throws Throwable {
+        latestRatesResponse = latestRatesClient.getLatestRates("https://api.ratesapi.io/api/");
+    }
+
+    @Then("^user should get error message")
+    public void verifyErrorForInvalidURL() throws Throwable {
+        Assert.assertEquals(latestRatesResponse.error, "time data 'api' does not match format '%Y-%m-%d'");
+    }
+
+    @Then("^the response for rates API (\\w+) should match$")
+    public void verifyResponsBody(String symbol) throws Throwable {
         LatestRatesResponse latestRatesResponse = latestRatesClient.getLatestRatesForSymbol(symbol);
 
         Assert.assertEquals(latestRatesResponse.base, "EUR");

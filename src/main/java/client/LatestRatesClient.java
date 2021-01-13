@@ -21,6 +21,18 @@ public class LatestRatesClient extends BaseClient {
         return latestRatesResponse;
     }
 
+    public LatestRatesResponse getLatestRates(String URL) {
+
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .get(URL);
+
+        LatestRatesResponse latestRatesResponse = response.as(LatestRatesResponse.class);
+        latestRatesResponse.setHttpStatusCode(response.getStatusCode());
+
+        return latestRatesResponse;
+    }
+
     public LatestRatesResponse getLatestRatesForSymbol(String symbol) {
         String latestRatesURL = getLatestRatesHost();
 
