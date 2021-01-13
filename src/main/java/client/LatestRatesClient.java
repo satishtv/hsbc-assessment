@@ -20,4 +20,18 @@ public class LatestRatesClient extends BaseClient {
 
         return latestRatesResponse;
     }
+
+    public LatestRatesResponse getLatestRatesForSymbol(String symbol) {
+        String latestRatesURL = getLatestRatesHost();
+
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .queryParam("symbol", symbol)
+                .get(latestRatesURL);
+
+        LatestRatesResponse latestRatesResponse = response.as(LatestRatesResponse.class);
+        latestRatesResponse.setHttpStatusCode(response.getStatusCode());
+
+        return latestRatesResponse;
+    }
 }
